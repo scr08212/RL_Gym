@@ -5,6 +5,7 @@ import tensorboard
 from stable_baselines3 import PPO # https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html
 from stable_baselines3.common.vec_env import DummyVecEnv
 from stable_baselines3.common.evaluation import evaluate_policy
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnRewardThreshold
 
 log_Path = os.path.join('RL','CartPole','Logs')
 """
@@ -62,5 +63,12 @@ env.close()
 
 """
 training_log_path = os.path.join(log_Path, 'PPO_1')
-
 # CMD::  PS C:\Users\scr08\Desktop\ML\RL\CartPole> tensorboard --logdir='Logs\PPO_1'
+
+env = gym.make('CartPole-v1',render_mode='human')
+save_path = os.path.join('RL','CartPole','Saved Models')
+stop_callback = StopTrainingOnRewardThreshold(reward_threshold=200, verbose=1)
+eval_callback = EvalCallback(env, callback_on_new_best=stop_callback, eval_freq=10000,best_model_save_path=save_path ,verbose=1)
+model = PPO('MlpPolicy', env, verbose = 1, tensorboard_log=log_Path)
+
+model.learn(total_timesteps=20000, callback=eval_callback)
