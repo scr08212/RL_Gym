@@ -41,9 +41,10 @@ env.close()
 
 
 
+"""
 # Test Model
 env = gym.make('CartPole-v1',render_mode='human')
-PPO_Path = os.path.join('RL','CartPole','Saved Models','PPO_Model_CartPole')
+PPO_Path = os.path.join('CartPole','Saved Models','PPO_Model_CartPole')
 model = PPO.load(PPO_Path, env=env)
 episodes = 5
 for episode in range(1, episodes+1):
@@ -61,7 +62,7 @@ for episode in range(1, episodes+1):
     print('Episodes:{} Score:{}'.format(episode, score))
 env.close()
 
-"""
+'''
 training_log_path = os.path.join(log_Path, 'PPO_1')
 # CMD::  PS C:\Users\scr08\Desktop\ML\RL\CartPole> tensorboard --logdir='Logs\PPO_1'
 
@@ -74,4 +75,4 @@ eval_callback = EvalCallback(env, callback_on_new_best=stop_callback, eval_freq=
 net_arch = [dict(pi=[128,128,128,128], vf=[128,128,128,128])]
 model = PPO('MlpPolicy', env, verbose = 1, tensorboard_log=log_Path, policy_kwargs={'net_arch':net_arch})
 model.learn(total_timesteps=20000, callback=eval_callback)
-
+'''
